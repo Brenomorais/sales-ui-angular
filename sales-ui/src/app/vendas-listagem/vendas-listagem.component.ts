@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { VendasService } from '../vendas/vendas.service';
+import { listLazyRoutes } from '../../../node_modules/@angular/compiler/src/aot/lazy_routes';
 
 @Component({
   selector: 'app-vendas-listagem',
@@ -14,8 +15,12 @@ export class VendasListagemComponent implements OnInit {
   constructor(private vendaService: VendasService) { }
 
   ngOnInit() {
+    this.listar();
+  }
+
+  listar(){
     this.vendaService.listar()
-      .subscribe(response => this.sales = response);
+    .subscribe(response => this.sales = response);
   }
 
 }

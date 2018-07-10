@@ -15,7 +15,15 @@ export class VendasService {
     return this.http.get<any>(`${this.api}/sales`);
   }
 
+  adicionar(sales: any): Observable<any> {
+    return this.http.post<any>(`${this.api}/sales`, sales);
+  }
+
   listarClientes(): Observable<any> {
     return this.http.get<any>(`${this.api}/clients`);
   }
+
+  listarProdutos(): Observable<any>{
+    return this.http.get<any>(`${this.api}/products`);
+  }  
 }

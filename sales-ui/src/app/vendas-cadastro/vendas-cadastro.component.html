@@ -4,19 +4,79 @@
     </div>
 </div>
 
-<form>
+<form autocomplete="off" #frm="ngForm" (ngSubmit)="adicionar(frm)">
+
     <div class="ui-g">
 
         <div class="ui-g-8 ui-fluid">
             <label>Cliente</label>
-            <p-dropdown id="cliente" name="cliente" [autoWidth]="false" placeholder="Selecione..." [options]="clients" optionLabel="name"></p-dropdown>
+            <p-dropdown id="cliente" name="cliente" [autoWidth]="false" placeholder="Selecione..." [options]="clients" optionLabel="name" [(ngModel)]="sale.client" required>
+            </p-dropdown>
         </div>
 
-        <div class="ui-g-4 ui-fluid">
+        <div class="ui-g-4 ui-sm-12 ui-fluid">
             <label>Frete</label>
-            <input pInputText id="frete" name="frete" currencyMask [options]="{prefix: '', thousands: '.', decimal: ',', allowNegative: false}" />
+            <input pInputText id="frete" name="frete" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }" [(ngModel)]="sale.freight" required (ngModelChange)="calcularTotal()" />
         </div>
 
+        <div class="ui-g-12">
+            <p-panel header="Itens">
+                <div class="ui-g">
+                    <div class="ui-g-8 ui-fluid">
+                        <label>Produto</label>
+                        <p-dropdown id="produto" name="produto" [autoWidth]="false" placeholder="Selecione" [options]="products" optionLabel="name" [(ngModel)]=" item.product" #produto></p-dropdown>
+                    </div>
+
+                    <div class="ui-g-3 ui-fluid">
+                        <label>Quantidade</label>
+                        <input pInputText type="number" id="quantidade" name="quantidade" [(ngModel)]="item.amount" #quantidade />
+                    </div>
+
+                    <div class="ui-g-1 ui-fluid">
+                        <br/>
+                        <button pButton type="button" icon="pi pi-plus" (click)="incluirItem()" [disabled]="!produto.value || !quantidade.value"></button>
+                    </div>
+
+                    <div class="ui-g-12">
+                        <p-table [value]="sale.itens">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Valor</th>
+                                    <th>Quantidade</th>
+                                    <th>Total</th>
+                                </tr>
+                            </ng-template>
+
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td>{{ item.product.name }}</td>
+                                    <td>{{ item.product.price | number:'1.2-2' }}</td>
+                                    <td>{{ item.amount }}</td>
+                                    <td>{{ item.total | number:'1.2-2' }}</td>
+                                </tr>
+                            </ng-template>
+
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="4">Nenhum item adicionado.</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+
+                </div>
+            </p-panel>
+        </div>
+
+        <div class="ui-g-4 ui-g-offset-8 ui-fluid">
+            <label>Total</label>
+            <input pInputText readonly [value]="sale.total | number: '1.2-2'" />
+        </div>
+
+        <div class="ui-g-4">
+            <button pButton icon="pi pi-check" label="Salvar" [disabled]="frm.invalid || sale.itens.length === 0"></button>
+        </div>
 
     </div>
 </form>
