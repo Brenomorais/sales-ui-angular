@@ -1,6 +1,6 @@
 <div class="ui-g">
     <div class="ui-g-12"></div>
-    <p-table [value]="sales">
+    <p-table [value]="sales" responsive="true">
         <ng-template pTemplate="caption">
             Listagem de Vendas
         </ng-template>
@@ -16,10 +16,18 @@
 
         <ng-template pTemplate="body" let-sale>
             <tr>
-                <td class="col-id">{{ sale.id }}</td>
-                <td class="col-nome">{{ sale.client.name }}</td>
-                <td class="col-data">{{ sale.register | date: 'dd/MM/yyyy' }}</td>
-                <td class="col-numero">{{ sale.total | number: '1.2-2' }}</td>
+                <td class="col-id">
+                    <span class="ui-column-title">Código:</span> {{ sale.id }}
+                </td>
+                <td class="col-nome">
+                    <span class="ui-column-title">Nome:</span> {{ sale.client.name }}
+                </td>
+                <td class="col-data">
+                    <span class="ui-column-title">Cadastro:</span> {{ sale.register | date: 'dd/MM/yyyy' }}
+                </td>
+                <td class="col-numero">
+                    <span class="ui-column-title">Total:</span> {{ sale.total | number: '1.2-2' }}
+                </td>
             </tr>
         </ng-template>
 
